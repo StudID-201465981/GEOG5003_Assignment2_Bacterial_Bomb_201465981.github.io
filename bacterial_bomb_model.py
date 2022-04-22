@@ -33,8 +33,8 @@ for row in wind_raster_csv: #for each row of data within the wind_raster variabl
     area.append(row_list) #make these lists into a 2D list which contains the area
 wind_raster.close() #close wind raster file as it is no linger needed in the model
 
-#matplotlib.pyplot.imshow(area) #test area working
-#matplotlib.pyplot.show() #test area working
+matplotlib.pyplot.imshow(area) #test area working
+matplotlib.pyplot.show() #test area working
 
 """Use the timer function to check how long it takes to run the model.(End)"""
 end_timer = time.process_time() #create end_timer variable to read the time
