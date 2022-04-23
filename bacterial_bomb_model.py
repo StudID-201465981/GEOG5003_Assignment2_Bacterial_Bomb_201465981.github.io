@@ -11,8 +11,8 @@ Created by: StudID - 201465981
 
 """
 
-"""Import the modules to be used in the bacterial_bomb_model code - matplotlib.pyplot,
-time, """
+"""Import the modules to be used in the bacterial_bomb_model code - csv, matplotlib.animation, 
+matplotlib.pyplot, time, """
 import csv
 import matplotlib.animation
 import matplotlib.pyplot
