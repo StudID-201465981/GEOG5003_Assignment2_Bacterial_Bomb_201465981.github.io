@@ -7,20 +7,23 @@ description
 
 Version: 1.0
 Created by: StudID - 201465981
-
-
 """
 
+
 """Import the modules to be used in the bacterial_bomb_model code - csv, matplotlib.animation, 
-matplotlib.pyplot, time, """
+matplotlib.pyplot, numpy, time, """
 import csv
 import matplotlib.animation
 import matplotlib.pyplot
+import numpy
 import time
+
 
 
 """Use the timer function to check how long it takes to run the model.(Start)"""
 start_timer = time.process_time() #create start_timer variable to read the time
+
+
 
 """Open and read in the wind_raster file using the csv reader. Create a 2D list
 called area which is used to create a visual display for the model and act as the 
@@ -37,6 +40,33 @@ wind_raster.close() #close wind raster file as it is no longer needed in the mod
 
 #matplotlib.pyplot.imshow(area) #test area working
 #matplotlib.pyplot.show() #test area working
+
+
+
+"""Create the variables for the code"""
+bacteria = [] #empty list to hold the bacteria coordinate values
+bacteria_count = 5000 #number of bacteria
+
+
+
+""""""
+
+
+
+"""Discover the position of the bomb epicentre Y and X coordinates from the
+2D list, utilising the unique value.
+
+Convert the 255 value to 0 in area to ensure the bacteria density.
+Write the output file to test that 255 has changed """
+check_loc = numpy.array(area) #create an array to use numpy functions on
+epicentre_yx = numpy.argwhere(check_loc == 255) #find the index of the bomb epicenter, given as row (Y) then value (X)
+epicentre = epicentre_yx[:, ::-1] #reverse for model print statement, XY is more relatable to the end user
+print("The XY coordinates for the bomb epicentre are " + str(epicentre).strip('[]')) #printout for model output
+
+area[150][50] = 0 #update bomb epicentre value to 0
+#print(area[150][50]) #test print
+
+
 
 """Find the size of the area for further coding inputs then comment out of the 
 final model. (Answer 300).
@@ -68,6 +98,8 @@ def update(frame): #create a new function
 animation = matplotlib.animation.FuncAnimation(figure, update, interval=1, repeat=False, 
                                                      frames=holder) 
 matplotlib.pyplot.show() #show the animation
+
+
 
 """Use the timer function to check how long it takes to run the model.(End)"""
 end_timer = time.process_time() #create end_timer variable to read the time
