@@ -11,5 +11,5 @@ the wind.
 The spread will then be displayed and written to an output file 
 ready to analyse further from the models' predictions. 
 
-All the necessary files are available from the repository [here](https://studid-201465981.github.io/GEOG5003_Assignment2_Bacterial_Bomb_201465981.github.io/)
+All the necessary files are available from the repository [here](https://github.com/StudID-201465981/GEOG5003_Assignment2_Bacterial_Bomb_201465981.github.io)
 Please open the README file first to understand the model and recieve specific user instructions. 
