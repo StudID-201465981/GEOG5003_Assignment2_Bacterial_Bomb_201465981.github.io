@@ -13,6 +13,7 @@ with bacteria, and return the density data.
     The horizontal_movement method controls the bacteria's XY direction.
     The add_density method marks the bacteria location on the area.
 - Add and show the density map.
+- Print interesting data values.
 - The output_area showing density writen as a text file in the directory.
 
 Version: 1.0
@@ -27,6 +28,7 @@ import csv
 import matplotlib.animation
 import matplotlib.pyplot
 import numpy
+import sys
 import time
 
 """Use the timer function to check how long it takes to run the model.(Start)"""
@@ -51,7 +53,12 @@ wind_raster.close() #close wind raster file as it is no longer needed in the mod
 """Create the variables for the code"""
 bacteria = [] #empty list to hold the bacteria coordinate values
 bacteria_count = 5000 #number of bacteria
-height = 75 #height in meters
+height = 75#height in meters
+
+"""Create input parameter and default values for command line"""
+bacteria_count = int(sys.argv[1]) if len(sys.argv) >= 2 else 5000 
+height = int(sys.argv[2]) if len(sys.argv) >= 3 else 75 #the parameter order of entry is bacteria_count then height
+
 
 """Discover the position of the bomb epicentre Y and X coordinates from the
 2D list, utilising the unique value.
@@ -60,7 +67,7 @@ Write the output file to test that 255 has changed """
 area_array = numpy.array(area) #create an array to use numpy functions on
 epicentre_yx = numpy.argwhere(area_array == 255) #find the index of the bomb epicenter, given as row (Y) then value (X)
 epicentre = epicentre_yx[:, ::-1] #reverse for model print statement, XY is more relatable to the end user
-print("The XY coordinates for the bomb epicentre are " + str(epicentre).strip('[]')) #printout for model output
+#print("The XY coordinates for the bomb epicentre are " + str(epicentre).strip('[]')) #printout for model output
 
 area[150][50] = 0 #update bomb epicentre value to 0
 #print(area[150][50]) #test print
@@ -70,7 +77,7 @@ for i in range(bacteria_count): #for the amount of bacteria stated in the count
     bacteria.append(bacterial_behaviour.Bacteria(height, area)) #populate bacteria variable using Bacteria object
 
 """Move the bactreia to their final location"""
-for i in range(height + 50): #random number to allow height to reach 0
+for i in range(height * 2): #large number to allow height to reach 0
     for i in range(bacteria_count): #for the amount of bacteria stated in the count
         if bacteria[i].height > 0: #complete the actions if bacteria is in the air or 'moveable'
             #print(str(bacteria[i].horizontal_movement()) + " " + 
@@ -78,6 +85,7 @@ for i in range(height + 50): #random number to allow height to reach 0
             #" " + str(bacteria[i].turbulance(height))) #test print
             bacteria[i].turbulance(height) #adjust the bacteria height
             bacteria[i].horizontal_movement() #move the bacteria 
+            bacteria[i].oob() #check for out of bounds bacteria
 
 """Create the density map"""
 for i in range(bacteria_count): #for each bacteria
@@ -96,9 +104,29 @@ matplotlib.pyplot.imshow(area) #show the area
 
 matplotlib.pyplot.show() #create the popup
 
-
 #check_density = sum(sum(area,[])) #test density
 #print(check_density) #test density
+
+"""Return writen data values"""
+outside_count = 0 #create variable with int value 0
+for i in range(bacteria_count): # for the bacteria
+    if bacteria[i].getx() < 0 or bacteria[i].getx() > 300 or bacteria[i].gety() < 0 or bacteria[i].gety() > 300: #if outside X or Y axis
+        outside_count += 1 #increase outside_count by 1
+
+densest = numpy.max(numpy.array(area)) #obtain the maximum area value
+
+x_list = [] #create empty list for X axis values
+y_list = [] #create empty list for y axis values
+for i in range(bacteria_count): #for the bacteria
+    x_list.append(bacteria[i].getx())#append the x values to a list
+    y_list.append(bacteria[i].gety())#append the y values to a list
+    spread = ((max(x_list) - min(x_list)) * (max(y_list) - min(y_list)))#formula to estimate the area coverage
+    
+#Printed data returns for user
+print("The XY coordinates for the bomb epicentre are " + str(epicentre).strip('[]')) #print bomb location
+print(str(outside_count) + " bacteria particles landed outside the study area")
+print("The most dense location contains " + str(densest) + " bacteria particles")
+print("The estimated area spread of the bacteria particles is " + str(spread) + " metres squared")
 
 """Write area_output.txt file to include the updated area"""
 write_area = open('area_output.txt', 'w', newline='') #open area_output.txt
