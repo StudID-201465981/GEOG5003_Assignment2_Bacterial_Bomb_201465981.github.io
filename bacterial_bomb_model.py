@@ -85,7 +85,6 @@ for i in range(height * 2): #large number to allow height to reach 0
             #" " + str(bacteria[i].turbulance(height))) #test print
             bacteria[i].turbulance(height) #adjust the bacteria height
             bacteria[i].horizontal_movement() #move the bacteria 
-            bacteria[i].oob() #check for out of bounds bacteria
 
 """Create the density map"""
 for i in range(bacteria_count): #for each bacteria

@@ -73,12 +73,3 @@ class Bacteria(): #Create object Bacteria
     def add_density(self, area): #define add_density method
         if self._y > 0 and self._y < 300 and self._x > 0 and self._x < 300: # if within XY axis 
             self.area[self._y][self._x] += 1 #increament 2D list by 1 at specified XY location 
-            
-    """Creare the oob() method to return the out of bound values"""
-    def oob(self): #define oob (out of bounds) method
-        outside_count = 0 #create variable with int value 0
-        
-        if self._y < 0 or self._y > 300 or self._x < 0 or self._x > 300: #if outside X or Y axis
-            outside_count += 1 #increase outside_count by 1
-    
-        return(outside_count) #reutrn outside_count value
